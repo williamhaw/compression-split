@@ -1,0 +1,35 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+
+    // Apply the application plugin to add support for building an application
+    id 'application'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {	
+	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+    // Use JUnit test framework
+    testCompile 'junit:junit:4.12'
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'compression',  
+        	'Implementation-Version': '1.0',
+        	'Main-Class': 'com.williamhaw.compression.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
