@@ -1,10 +1,16 @@
 package com.williamhaw.compression.file.structure;
 
+/**
+ * POJO to encapsulate file information
+ * @author williamhaw
+ *
+ */
 public class FileStructure {
 	public enum Type{FILE, DIRECTORY};
 	private String name;
 	private Type type;
-	private int fileNumber;
+	//Valid file numbers must be positive
+	private int fileNumber = -1;
 	
 	public String getName() {
 		return name;
