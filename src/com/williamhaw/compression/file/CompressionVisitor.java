@@ -42,14 +42,14 @@ public class CompressionVisitor implements FileVisitor<Path> {
 		for(Path p : stream) {
 			if (Files.isDirectory(p)) {
 				FileStructure d = new FileStructure();
-				//TODO relativise path
-				d.setName("");
+				d.setName(p.getFileName().toString());
+				d.setRelativePath(rootDir.relativize(p).toString());
 				d.setType(Type.DIRECTORY);
 				fileList.add(d);
 			}else if (Files.isRegularFile(p) && !Files.isSymbolicLink(p) && Files.isReadable(p)) {//skip symbolic links
 				FileStructure f = new FileStructure();
-				//TODO relativise path
-				f.setName("");
+				f.setName(p.getFileName().toString());
+				f.setRelativePath(rootDir.relativize(p).toString());
 				f.setType(Type.FILE);
 				f.setFileNumber(fileCounter.getAndIncrement());
 				fileList.add(f);
