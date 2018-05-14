@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.simple.parser.ParseException;
 
+import com.williamhaw.compression.decompress.DecompressionHandler;
+import com.williamhaw.compression.decompress.impl.GZIPDecompression;
 import com.williamhaw.compression.file.DecompressingReader;
 import com.williamhaw.compression.file.structure.FileStructure;
 import com.williamhaw.compression.json.FileStructureJSONSerialization;
@@ -45,11 +47,24 @@ public class GZIPDecompressionExecutor {
 		
 		FileStructure directory;
 		//create directories
-		while((directory = directoryQueue.poll(1000, TimeUnit.MILLISECONDS)) != null) {
-			
+		while((directory = directoryQueue.poll(10, TimeUnit.MILLISECONDS)) != null) {
+			File newDirectory = new File(inputDirectory, directory.getRelativePath());
+			newDirectory.mkdirs();
 		}
 		
-		
+		reader.readDirectories();
+		FileStructure file;
+		//decompress files
+		while((file = fileQueue.poll(10, TimeUnit.MILLISECONDS)) != null) {
+			final FileStructure toPassToRunnable = file;
+			threadPool.execute(new Runnable() {				
+				@Override
+				public void run() {
+					DecompressionHandler handler = new DecompressionHandler(new GZIPDecompression());
+					handler.decompress(toPassToRunnable, inputRoot, new File(outputRoot, toPassToRunnable.getRelativePath()));
+				}
+			});
+		}
 		
 	}
 }
