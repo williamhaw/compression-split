@@ -16,6 +16,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+sourceSets.main.java.srcDirs = ['src']
+sourceSets.test.java.srcDirs = ['test']
+
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {
 	manifest {
@@ -24,7 +27,7 @@ task fatJar(type: Jar) {
         	'Main-Class': 'com.williamhaw.compression.Main'
     }
     baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
 

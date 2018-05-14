@@ -1,7 +1,31 @@
 # Compress files to a certain file length
 
 ## Usage
-TODO
+Build the project by running the following command:
+On Linux:
+```sh
+./gradlew clean fatJar
+```
+On Windows:
+```sh
+.\gradlew.bat clean fatJar
+```
+To run compression:
+```sh
+java -cp build/libs/* com.williamhaw.compression.Main path/to/input path/to/output maxSizeMB
+```
+E.g
+```sh
+java -cp build/libs/* com.williamhaw.compression.Main testfiles/source testfiles/compressed 1
+```
+To run decompression:
+```sh
+java -cp build/libs/* com.williamhaw.compression.Main path/to/input path/to/output
+```
+E.g
+```sh
+java -cp build/libs/* com.williamhaw.compression.Main testfiles/compressed testfiles/decompressed
+```
 ## Approach
 ### Compression
 1. Recursively traverse directory system
