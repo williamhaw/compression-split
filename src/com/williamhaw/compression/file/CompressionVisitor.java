@@ -34,6 +34,10 @@ public class CompressionVisitor implements FileVisitor<Path> {
 		this.fileQueue = fileQueue;
 	}
 	
+	public List<FileStructure> getFileList() {
+		return fileList;
+	}
+	
 	@Override
 	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 		
