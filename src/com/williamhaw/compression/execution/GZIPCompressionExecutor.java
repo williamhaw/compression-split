@@ -42,7 +42,7 @@ public class GZIPCompressionExecutor {
 			public void run() {
 				try {
 					while(visitedAllFiles.get() == false) {
-						final FileStructure fileStructure = workQueue.take();
+						final FileStructure fileStructure = workQueue.poll(100, TimeUnit.MILLISECONDS);
 						threadPool.submit(new Runnable() {					
 							@Override
 							public void run() {								
@@ -68,6 +68,7 @@ public class GZIPCompressionExecutor {
 		File jsonFile = new File(targetRoot, "metadata.json");
 		Files.write(Paths.get(jsonFile.toURI()), filesJSON.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
 		
+		threadPool.shutdown();
 		threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
 	}
 }
