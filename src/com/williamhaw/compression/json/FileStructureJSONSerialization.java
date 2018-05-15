@@ -46,15 +46,14 @@ public class FileStructureJSONSerialization {
 		
 		List<FileStructure> ret = new ArrayList<>();
 		
-		while(array.iterator().hasNext()) {
-			JSONObject obj = (JSONObject) array.iterator().next();
+		for(Object o : array) {
+			JSONObject obj = (JSONObject) o;
 			FileStructure file = new FileStructure();
 			file.setName((String) obj.get(KEY_NAME));
 			file.setType(Type.valueOf((String)obj.get(KEY_TYPE)));
 			file.setRelativePath((String) obj.get(KEY_RELATIVE_PATH));
 			if(file.getType() == Type.FILE)
 				file.setFileNumber((long) obj.get(KEY_FILE_NUMBER));
-			
 			ret.add(file);
 		}		
 		

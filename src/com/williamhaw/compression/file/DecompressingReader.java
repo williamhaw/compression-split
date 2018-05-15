@@ -26,6 +26,7 @@ public class DecompressingReader {
 	public void readDirectories() throws InterruptedException {
 		for(FileStructure fs : fileList) {
 			if(fs.getType() == Type.DIRECTORY) {
+				System.out.println("Directory found: " + fs);
 				directoryQueue.put(fs);
 			}
 		}
@@ -34,6 +35,7 @@ public class DecompressingReader {
 	public void readFiles() throws InterruptedException {
 		for(FileStructure fs : fileList) {
 			if(fs.getType() == Type.FILE) {
+				System.out.println("File found: " + fs);
 				fileQueue.put(fs);
 			}
 		}

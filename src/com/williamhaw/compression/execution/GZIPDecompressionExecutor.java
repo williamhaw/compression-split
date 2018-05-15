@@ -52,7 +52,7 @@ public class GZIPDecompressionExecutor {
 			newDirectory.mkdirs();
 		}
 		
-		reader.readDirectories();
+		reader.readFiles();
 		FileStructure file;
 		//decompress files
 		while((file = fileQueue.poll(10, TimeUnit.MILLISECONDS)) != null) {
@@ -66,5 +66,6 @@ public class GZIPDecompressionExecutor {
 			});
 		}
 		
+		threadPool.shutdown();
 	}
 }
