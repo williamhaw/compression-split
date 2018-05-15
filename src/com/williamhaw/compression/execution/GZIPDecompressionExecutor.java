@@ -48,8 +48,9 @@ public class GZIPDecompressionExecutor {
 		FileStructure directory;
 		//create directories
 		while((directory = directoryQueue.poll(10, TimeUnit.MILLISECONDS)) != null) {
-			File newDirectory = new File(inputDirectory, directory.getRelativePath());
-			newDirectory.mkdirs();
+			File newDirectory = new File(outputDirectory, directory.getRelativePath());
+			System.out.println("Creating directory: " + newDirectory.getAbsolutePath());
+			System.out.println(newDirectory.mkdirs() ? "created" : "not created; already exists");
 		}
 		
 		reader.readFiles(); //load files into fileQueue
