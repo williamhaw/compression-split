@@ -36,20 +36,22 @@ public class GZIPCompressionExecutor {
 		final File targetRoot = new File(outputDirectory);
 		
 		final AtomicBoolean visitedAllFiles = new AtomicBoolean(false);
-		
+
 		Thread compressionTaskCreator = new Thread(new Runnable() {			
 			@Override
 			public void run() {
 				try {
 					while(visitedAllFiles.get() == false) {
 						final FileStructure fileStructure = workQueue.poll(100, TimeUnit.MILLISECONDS);
-						threadPool.submit(new Runnable() {					
-							@Override
-							public void run() {								
-								CompressionHandler handler = new CompressionHandler(new GZipCompression());
-								handler.compress(fileStructure.getFileNumber(), new File(inputRoot, fileStructure.getRelativePath()), targetRoot, sizelimitMB);					
-							}
-						});
+						if(fileStructure != null) {
+							threadPool.submit(new Runnable() {					
+								@Override
+								public void run() {								
+									CompressionHandler handler = new CompressionHandler(new GZipCompression());
+									handler.compress(fileStructure.getFileNumber(), new File(inputRoot, fileStructure.getRelativePath()), targetRoot, sizelimitMB);					
+								}
+							});
+						}
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
