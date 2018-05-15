@@ -43,7 +43,7 @@ public class GZIPDecompressionExecutor {
 		final BlockingQueue<FileStructure> fileQueue = new ArrayBlockingQueue<>(fileList.size());
 		
 		DecompressingReader reader = new DecompressingReader(fileList, directoryQueue, fileQueue);
-		reader.readDirectories();
+		reader.readDirectories(); //load directories into directoryQueue
 		
 		FileStructure directory;
 		//create directories
@@ -52,7 +52,7 @@ public class GZIPDecompressionExecutor {
 			newDirectory.mkdirs();
 		}
 		
-		reader.readFiles();
+		reader.readFiles(); //load files into fileQueue
 		FileStructure file;
 		//decompress files
 		while((file = fileQueue.poll(10, TimeUnit.MILLISECONDS)) != null) {
@@ -61,7 +61,7 @@ public class GZIPDecompressionExecutor {
 				@Override
 				public void run() {
 					DecompressionHandler handler = new DecompressionHandler(new GZIPDecompression());
-					handler.decompress(toPassToRunnable, inputRoot, new File(outputRoot, toPassToRunnable.getRelativePath()));
+					handler.decompress(toPassToRunnable, inputRoot, outputRoot);
 				}
 			});
 		}

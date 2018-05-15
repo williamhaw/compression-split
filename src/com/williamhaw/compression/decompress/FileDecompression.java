@@ -18,7 +18,7 @@ public interface FileDecompression {
 	 * @param toBeDecompressed file concatenated from parts to be decompressed
 	 * @param targetDirectory directory to write decompressed file to
 	 */
-	public void decompress(FileStructure fileStructure, File toBeDecompressed, File targetDirectory) throws IOException;
+	public void decompress(FileStructure fileStructure, File toBeDecompressed, File targetFile) throws IOException;
 	
 	public CompressionType type();
 }

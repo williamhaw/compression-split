@@ -13,16 +13,16 @@ import java.nio.channels.WritableByteChannel;
 import com.williamhaw.compression.file.structure.FileStructure;
 
 public abstract class AbstractDecompression implements FileDecompression{
-	public void decompress(FileStructure fileStructure, File toBeDecompressed, File targetDirectory) throws IOException {
+	public void decompress(FileStructure fileStructure, File toBeDecompressed, File targetFile) throws IOException {
 		if(fileStructure.getFileNumber() == FileStructure.NOT_A_FILE)
 			throw new IllegalArgumentException("Illegal file number found for " + fileStructure);
 		
 		InputStream decompressedInputStream = getDecompressedInputStream(new FileInputStream(toBeDecompressed));
 		ReadableByteChannel in = Channels.newChannel(decompressedInputStream);		
 
-		File decompressedFile = new File(targetDirectory, fileStructure.getName());
-		System.out.println("Decompressing file to " + decompressedFile);
-		WritableByteChannel out = Channels.newChannel(new FileOutputStream(decompressedFile));
+		System.out.println("Decompressing file to " + targetFile);
+		targetFile.createNewFile();
+		WritableByteChannel out = Channels.newChannel(new FileOutputStream(targetFile));
 		ByteBuffer bb = ByteBuffer.allocate(16 * 1024);
 		
 		while(in.read(bb) != -1) {
