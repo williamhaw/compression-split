@@ -53,7 +53,7 @@ public class FileStructureJSONSerialization {
 			file.setType(Type.valueOf((String)obj.get(KEY_TYPE)));
 			file.setRelativePath((String) obj.get(KEY_RELATIVE_PATH));
 			if(file.getType() == Type.FILE)
-				file.setFileNumber((int) obj.get(KEY_FILE_NUMBER));
+				file.setFileNumber((long) obj.get(KEY_FILE_NUMBER));
 			
 			ret.add(file);
 		}		

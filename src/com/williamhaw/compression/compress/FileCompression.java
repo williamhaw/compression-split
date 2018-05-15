@@ -18,7 +18,7 @@ public interface FileCompression {
 	 * @return temporary file with compressed contents of toBeCompressed
 	 * @throws IOException
 	 */
-	public File compress(File toBeCompressed, int fileNumber) throws IOException;
+	public File compress(File toBeCompressed, long fileNumber) throws IOException;
 	
 	/**
 	 * @return type of compression

@@ -19,7 +19,7 @@ import java.nio.file.Paths;
  */
 public abstract class AbstractCompression implements FileCompression {	
 	
-	public File compress(File toBeCompressed, int fileNumber) throws IOException{
+	public File compress(File toBeCompressed, long fileNumber) throws IOException{
 		
 		File tempFile = File.createTempFile(String.valueOf(fileNumber) + ".compressed", ".tmp");
 		System.out.println("Opening temp file at " + tempFile);

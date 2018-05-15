@@ -6,13 +6,13 @@ package com.williamhaw.compression.file.structure;
  *
  */
 public class FileStructure {
-	public static final int NOT_A_FILE = -1;
+	public static final long NOT_A_FILE = -1;
 	public enum Type{FILE, DIRECTORY};
 	private String name;
 	private String relativePath;
 	private Type type;
 	//Valid file numbers must be positive
-	private int fileNumber = NOT_A_FILE;
+	private long fileNumber = NOT_A_FILE;
 	
 	public String getName() {
 		return name;
@@ -32,10 +32,10 @@ public class FileStructure {
 	public void setType(Type type) {
 		this.type = type;
 	}
-	public int getFileNumber() {
+	public long getFileNumber() {
 		return fileNumber;
 	}
-	public void setFileNumber(int fileNumber) {
+	public void setFileNumber(long fileNumber) {
 		this.fileNumber = fileNumber;
 	}
 	

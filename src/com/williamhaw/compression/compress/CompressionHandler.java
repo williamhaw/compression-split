@@ -21,7 +21,7 @@ public class CompressionHandler {
 		this.compression = compression;
 	}
 
-	public void compress(int fileNumber, File toBeCompressed, File targetDirectory, int limitMB) {
+	public void compress(long fileNumber, File toBeCompressed, File targetDirectory, int limitMB) {
 		try {
 			System.out.println("Compressing file at " + toBeCompressed);
 			File tempFile = compression.compress(toBeCompressed, fileNumber);
