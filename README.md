@@ -45,25 +45,30 @@ java -cp build/libs/* com.williamhaw.compression.Main testfiles/compressed testf
 ```
 [
 {
-    "name" : "/",
+    "name" : "a",
+    "relativePath" : "a",
     "type" : "directory"
 },
 {
-    "name" : "/a",
+    "name" : "b",
+    "relativePath" : "b",
     "type" : "file",
     "fileNumber" : 1
 },
 {
-    "name" : "/b",
+    "name" : "c",
+    "relativePath" : "c"
+    "type" : "directory"
+},
+{
+    "name" : "d",
+    "relativePath" : "c/d"
     "type" : "file",
     "fileNumber" : 2
 },
 {
-    "name" : "/c",
-    "type" : "directory"
-},
-{
-    "name" : "/c/d",
+    "name" : "e",
+    "relativePath" : "c/e"
     "type" : "file",
     "fileNumber" : 3
 }
@@ -73,7 +78,6 @@ java -cp build/libs/* com.williamhaw.compression.Main testfiles/compressed testf
 ## Compressed directory structure
 ```
 /
-    compressiontype
     metadata.json.compressed
     1.compressed.1
     1.compressed.2
@@ -82,6 +86,13 @@ java -cp build/libs/* com.williamhaw.compression.Main testfiles/compressed testf
     2.compressed.3
     3.compressed.1
 ```
+
+## To Extend
+1. Implement the FileCompression and FileDecompression interfaces
+or
+2. Extend the AbstractCompression and AbstractDecompression classes
+    1. The child class must return an InputStream for writing the entire compressed contents to disk
+3. Add new type to CompressionType and CompressionFactory
 
 ## Possible Extensions
 1. Keep file permissions
