@@ -1,5 +1,6 @@
 package com.williamhaw.compression.json;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,9 @@ public class FileStructureJSONSerialization {
 			FileStructure file = new FileStructure();
 			file.setName((String) obj.get(KEY_NAME));
 			file.setType(Type.valueOf((String)obj.get(KEY_TYPE)));
-			file.setRelativePath((String) obj.get(KEY_RELATIVE_PATH));
+			String relativePath = (String) obj.get(KEY_RELATIVE_PATH);
+			relativePath.replace("\\", File.separator); //if files were compressed on Windows and decompressed on Linux/Unix
+			file.setRelativePath(relativePath);
 			if(file.getType() == Type.FILE)
 				file.setFileNumber((long) obj.get(KEY_FILE_NUMBER));
 			ret.add(file);
