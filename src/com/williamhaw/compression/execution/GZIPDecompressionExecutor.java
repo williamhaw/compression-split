@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -14,20 +15,22 @@ import java.util.concurrent.TimeUnit;
 
 import org.json.simple.parser.ParseException;
 
+import com.williamhaw.compression.compress.CompressionFactory;
 import com.williamhaw.compression.decompress.DecompressionHandler;
-import com.williamhaw.compression.decompress.impl.GZIPDecompression;
 import com.williamhaw.compression.file.DecompressingReader;
 import com.williamhaw.compression.file.structure.FileStructure;
 import com.williamhaw.compression.json.FileStructureJSONSerialization;
+import com.williamhaw.compression.utils.CompressionType;
 
 /**
+ * Reads metadata json file, makes directories and submits files to excecutor to decompress in parallel
  * @author williamhaw
  *
  */
 public class GZIPDecompressionExecutor {
 	
 	private final ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-	
+	private final CompressionFactory factory = new CompressionFactory();
 	
 	public void executeDecompression(final String inputDirectory, final String outputDirectory) throws InterruptedException, IOException, ParseException {
 		final File inputRoot = new File(inputDirectory);
@@ -54,15 +57,15 @@ public class GZIPDecompressionExecutor {
 		}
 		
 		reader.readFiles(); //load files into fileQueue
-		FileStructure file;
 		//decompress files
-		while((file = fileQueue.poll(10, TimeUnit.MILLISECONDS)) != null) {
-			final FileStructure toPassToRunnable = file;
+		List<FileStructure> filesToDecompress = new ArrayList<>();
+		fileQueue.drainTo(filesToDecompress);
+		for(final FileStructure toSubmit : filesToDecompress) {
 			threadPool.execute(new Runnable() {				
 				@Override
 				public void run() {
-					DecompressionHandler handler = new DecompressionHandler(new GZIPDecompression());
-					handler.decompress(toPassToRunnable, inputRoot, outputRoot);
+					DecompressionHandler handler = new DecompressionHandler(factory.getFileDecompression(CompressionType.GZIP));
+					handler.decompress(toSubmit, inputRoot, outputRoot);
 				}
 			});
 		}

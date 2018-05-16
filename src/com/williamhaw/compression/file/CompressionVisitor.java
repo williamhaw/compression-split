@@ -9,9 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.williamhaw.compression.execution.tasks.CompressionTaskRunner;
 import com.williamhaw.compression.file.structure.FileStructure;
 import com.williamhaw.compression.file.structure.FileStructure.Type;
 
@@ -25,13 +25,13 @@ import com.williamhaw.compression.file.structure.FileStructure.Type;
 public class CompressionVisitor implements FileVisitor<Path> {
 	
 	private Path rootDir;
-	private BlockingQueue<FileStructure> fileQueue;
 	private List<FileStructure> fileList = new ArrayList<>();
 	private AtomicInteger fileCounter = new AtomicInteger(1);
+	private CompressionTaskRunner taskRunner;
 	
-	public CompressionVisitor(Path rootDir, BlockingQueue<FileStructure> fileQueue){
+	public CompressionVisitor(Path rootDir, CompressionTaskRunner taskRunner){
 		this.rootDir = rootDir;
-		this.fileQueue = fileQueue;
+		this.taskRunner = taskRunner;
 	}
 	
 	public List<FileStructure> getFileList() {
@@ -57,11 +57,7 @@ public class CompressionVisitor implements FileVisitor<Path> {
 				f.setType(Type.FILE);
 				f.setFileNumber(fileCounter.getAndIncrement());
 				fileList.add(f);
-				try {
-					fileQueue.put(f);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				taskRunner.submit(f);
 			}
 		}		
 		return FileVisitResult.CONTINUE;
