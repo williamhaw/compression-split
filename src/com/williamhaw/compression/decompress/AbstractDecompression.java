@@ -12,6 +12,14 @@ import java.nio.channels.WritableByteChannel;
 
 import com.williamhaw.compression.file.structure.FileStructure;
 
+
+/**
+ * Performs the decompression from a temporary file to the final destination
+ * <p>
+ * Inheriting classes must use a buffered InputStream to avoid loading the entire file into memory
+ * @author williamhaw
+ *
+ */
 public abstract class AbstractDecompression implements FileDecompression{
 	public void decompress(FileStructure fileStructure, File toBeDecompressed, File targetFile) throws IOException {
 		if(fileStructure.getFileNumber() == FileStructure.NOT_A_FILE)
