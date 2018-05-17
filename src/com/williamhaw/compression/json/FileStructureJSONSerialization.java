@@ -53,8 +53,7 @@ public class FileStructureJSONSerialization {
 			file.setName((String) obj.get(KEY_NAME));
 			file.setType(Type.valueOf((String)obj.get(KEY_TYPE)));
 			String relativePath = (String) obj.get(KEY_RELATIVE_PATH);
-			relativePath.replace("\\", File.separator); //if files were compressed on Windows and decompressed on Linux/Unix
-			file.setRelativePath(relativePath);
+			file.setRelativePath(relativePath.replace("\\", File.separator)); //if files were compressed on Windows and decompressed on Linux/Unix
 			if(file.getType() == Type.FILE)
 				file.setFileNumber((long) obj.get(KEY_FILE_NUMBER));
 			ret.add(file);
